@@ -1,0 +1,10 @@
+﻿cl : komut satırı  warning D9002: Bilinmeyen '/interface-' seçeneği yoksayılıyor
+  main.cpp
+C:\Users\90535\source\repos\computer graphics3\main.cpp(30,17): warning C4244: '=': 'double' - 'float' dönüşümü; veri kaybı olabilir
+C:\Users\90535\source\repos\computer graphics3\main.cpp(31,17): warning C4244: '=': 'double' - 'float' dönüşümü; veri kaybı olabilir
+C:\Users\90535\source\repos\computer graphics3\main.cpp(36,19): warning C4244: 'başlatılıyor': 'double' - 'float' dönüşümü; veri kaybı olabilir
+C:\Users\90535\source\repos\computer graphics3\main.cpp(37,19): warning C4244: 'başlatılıyor': 'double' - 'float' dönüşümü; veri kaybı olabilir
+C:\Users\90535\source\repos\computer graphics3\main.cpp(39,13): warning C4244: '=': 'double' - 'float' dönüşümü; veri kaybı olabilir
+C:\Users\90535\source\repos\computer graphics3\main.cpp(40,13): warning C4244: '=': 'double' - 'float' dönüşümü; veri kaybı olabilir
+C:\Users\90535\source\repos\computer graphics3\main.cpp(344,23): warning C4244: 'başlatılıyor': 'double' - 'float' dönüşümü; veri kaybı olabilir
+  computer graphics3.vcxproj -> C:\Users\90535\source\repos\computer graphics3\x64\Debug\computer graphics3.exe

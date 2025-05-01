@@ -1,0 +1,10 @@
+# Visual Studio dosyalarý
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Derleme çýktýlarý
+bin/
+obj/

@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "computer.131e717a\\x64\\Debug\\glm.obj",
+            "outputs": [
+                "computer.131e717a\\x64\\Debug\\glm.cppm.obj.dt.module.json",
+                "computer.131e717a\\x64\\Debug\\glm.cppm.obj.dt.d.json"
+            ],
+            "requires": []
+        }
+    ]
+}
