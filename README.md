@@ -63,6 +63,12 @@ Fare: Kamera yönünü değiştirmek.
 
 ESC: Uygulamayı kapatmak.
 
+![image](https://github.com/user-attachments/assets/5de2dc94-3e5f-4230-80cd-0bf9e1cc780a)
+
+![image](https://github.com/user-attachments/assets/c352b147-613d-4411-a9e9-f0781a5d619b)
+
+![image](https://github.com/user-attachments/assets/26b200df-ca83-4475-952b-1212d1d5a00f)
+
 ## Görsel
 Projede sokak lambaları, binalar ve yol geometrilerini içeren bir sokak sahnesi bulunmaktadır. Her sokak lambası, farklı pozisyonlarda yer alır ve sahneye uygun aydınlatma ekler.
 
