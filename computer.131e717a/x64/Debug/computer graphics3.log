@@ -1,10 +1,14 @@
-﻿cl : komut satırı  warning D9002: Bilinmeyen '/interface-' seçeneği yoksayılıyor
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: Ara dizin (computer.131e717a\x64\Debug\) başka bir projeden (computer graphics3.vcxproj) paylaşılan dosyalar içeriyor. Bu, hatalı temizleme ve yeniden oluşturma davranışına neden olabilir.
+cl : komut satırı  warning D9002: Bilinmeyen '/interface-' seçeneği yoksayılıyor
   main.cpp
-C:\Users\90535\source\repos\computer graphics3\main.cpp(30,17): warning C4244: '=': 'double' - 'float' dönüşümü; veri kaybı olabilir
-C:\Users\90535\source\repos\computer graphics3\main.cpp(31,17): warning C4244: '=': 'double' - 'float' dönüşümü; veri kaybı olabilir
-C:\Users\90535\source\repos\computer graphics3\main.cpp(36,19): warning C4244: 'başlatılıyor': 'double' - 'float' dönüşümü; veri kaybı olabilir
-C:\Users\90535\source\repos\computer graphics3\main.cpp(37,19): warning C4244: 'başlatılıyor': 'double' - 'float' dönüşümü; veri kaybı olabilir
-C:\Users\90535\source\repos\computer graphics3\main.cpp(39,13): warning C4244: '=': 'double' - 'float' dönüşümü; veri kaybı olabilir
-C:\Users\90535\source\repos\computer graphics3\main.cpp(40,13): warning C4244: '=': 'double' - 'float' dönüşümü; veri kaybı olabilir
-C:\Users\90535\source\repos\computer graphics3\main.cpp(344,23): warning C4244: 'başlatılıyor': 'double' - 'float' dönüşümü; veri kaybı olabilir
-  computer graphics3.vcxproj -> C:\Users\90535\source\repos\computer graphics3\x64\Debug\computer graphics3.exe
+C:\Users\90535\source\repos\computer graphics3\main.cpp(62,17): warning C4244: '=': 'double' - 'float' dönüşümü; veri kaybı olabilir
+C:\Users\90535\source\repos\computer graphics3\main.cpp(63,17): warning C4244: '=': 'double' - 'float' dönüşümü; veri kaybı olabilir
+C:\Users\90535\source\repos\computer graphics3\main.cpp(68,19): warning C4244: 'başlatılıyor': 'double' - 'float' dönüşümü; veri kaybı olabilir
+C:\Users\90535\source\repos\computer graphics3\main.cpp(69,19): warning C4244: 'başlatılıyor': 'double' - 'float' dönüşümü; veri kaybı olabilir
+C:\Users\90535\source\repos\computer graphics3\main.cpp(71,13): warning C4244: '=': 'double' - 'float' dönüşümü; veri kaybı olabilir
+C:\Users\90535\source\repos\computer graphics3\main.cpp(72,13): warning C4244: '=': 'double' - 'float' dönüşümü; veri kaybı olabilir
+C:\Users\90535\source\repos\computer graphics3\main.cpp(431,23): warning C4244: 'başlatılıyor': 'double' - 'float' dönüşümü; veri kaybı olabilir
+C:\Users\90535\source\repos\computer graphics3\main.cpp(514,20): warning C4244: 'başlatılıyor': 'double' - 'float' dönüşümü; veri kaybı olabilir
+C:\Users\90535\source\repos\computer graphics3\main.cpp(544,59): warning C4267: 'bağımsız değişken': 'size_t' - 'GLsizei' dönüşümü; veri kaybı olabilir
+C:\Users\90535\source\repos\computer graphics3\main.cpp(561,57): warning C4267: 'bağımsız değişken': 'size_t' - 'GLsizei' dönüşümü; veri kaybı olabilir
+  computer graphics3.vcxproj -> C:\Users\90535\source\repos\computer graphics3\x64\Debug\computer_graphics3.exe

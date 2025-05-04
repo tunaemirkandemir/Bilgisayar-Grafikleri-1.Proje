@@ -24,6 +24,38 @@ float lastX = WIDTH / 2.0f;
 float lastY = HEIGHT / 2.0f;
 bool firstMouse = true;
 
+std::vector<float> createStarVertices(float centerX, float centerY, float radius) {
+    std::vector<float> vertices;
+    const int numPoints = 5;
+    const float PI = 3.1415926f;
+
+    for (int i = 0; i < numPoints; ++i) {
+        float angle_outer = 2 * PI * i / numPoints - PI / 2;
+        float angle_inner = angle_outer + PI / numPoints;
+
+        float outerX = centerX + radius * cos(angle_outer);
+        float outerY = centerY + radius * sin(angle_outer);
+        float innerX = centerX + (radius * 0.5f) * cos(angle_inner);
+        float innerY = centerY + (radius * 0.5f) * sin(angle_inner);
+
+        // Center -> outer -> inner (triangle fan)
+        vertices.push_back(centerX);
+        vertices.push_back(centerY);
+        vertices.push_back(0.0f);
+
+        vertices.push_back(outerX);
+        vertices.push_back(outerY);
+        vertices.push_back(0.0f);
+
+        vertices.push_back(innerX);
+        vertices.push_back(innerY);
+        vertices.push_back(0.0f);
+    }
+
+    return vertices;
+}
+
+
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
     if (firstMouse) {
@@ -53,6 +85,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
     direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
     cameraFront = glm::normalize(direction);
 }
+
+
 
 
 // === Vertexler (yol, kaldırımlar, lambalar, binalar) ===
@@ -225,6 +259,27 @@ std::vector<float> vertices = {
         
 };
 
+float starVertices[] = {
+    // Her üçgen: merkez - dış köşe - iç köşe
+     0.0f,  0.0f,  0.0f,   0.0f,  0.05f,  0.0f,   0.019f,  0.015f,  0.0f,
+     0.0f,  0.0f,  0.0f,   0.019f,  0.015f,  0.0f,   0.047f,  0.015f,  0.0f,
+     0.0f,  0.0f,  0.0f,   0.047f,  0.015f,  0.0f,   0.025f, -0.009f,  0.0f,
+     0.0f,  0.0f,  0.0f,   0.025f, -0.009f,  0.0f,  0.029f, -0.04f,  0.0f,
+     0.0f,  0.0f,  0.0f,   0.029f, -0.04f,  0.0f,  0.0f, -0.02f,  0.0f,
+     0.0f,  0.0f,  0.0f,   0.0f, -0.02f,  0.0f,  -0.029f, -0.04f,  0.0f,
+     0.0f,  0.0f,  0.0f,   -0.029f, -0.04f,  0.0f,  -0.025f, -0.009f,  0.0f,
+     0.0f,  0.0f,  0.0f,   -0.025f, -0.009f,  0.0f,  -0.047f,  0.015f,  0.0f,
+     0.0f,  0.0f,  0.0f,   -0.047f,  0.015f,  0.0f,  -0.019f,  0.015f,  0.0f,
+     0.0f,  0.0f,  0.0f,   -0.019f,  0.015f,  0.0f,   0.0f,  0.05f,  0.0f,
+};
+
+std::vector<glm::vec3> starTrail;
+const int maxTrailLength = 500; // Kuyruk uzunluğu
+
+
+
+
+
 // === Fonksiyonlar ===
 void framebuffer_size_callback(GLFWwindow* w, int width, int height) {
     glViewport(0, 0, width, height);
@@ -277,27 +332,40 @@ in vec3 FragPos;
 in vec3 Normal;
 out vec4 FragColor;
 
-uniform vec3 lightPos[6];
+uniform vec3 lightPos[7];
 uniform vec3 viewPos;
 uniform vec3 lightColor;
 uniform vec3 objectColor;
+uniform vec3 emissionColor;
+uniform int useEmission; 
 
 void main() {
     vec3 norm = normalize(Normal);
     vec3 result = vec3(0.0);
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 0; i < 7; ++i) {
         vec3 lightDir = normalize(lightPos[i] - FragPos);
         float diff = max(dot(norm, lightDir), 0.0);
+        if ( i== 6) { 
+           diff = 1.0;
+        }
         result += diff * lightColor * 0.5f;
     }
     float ambientStrength = 0.3;
     vec3 ambient = ambientStrength * lightColor;
     vec3 finalColor = (ambient + result) * objectColor;
+
+    vec3 emissive = vec3(0.0);
+    if (useEmission == 1) {
+        emissive = emissionColor;
+    }
     FragColor = vec4(finalColor, 1.0);
 }
 )glsl";
 
 int main() {
+    vertices.insert(vertices.end(), std::begin(starVertices), std::end(starVertices));
+
+
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -330,14 +398,33 @@ int main() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); glEnableVertexAttribArray(0);
     glEnable(GL_DEPTH_TEST);
 
+
+
+    /// yıldız içinb vao ve vbo
+    std::vector<float> starVertices = createStarVertices(0.0f, 0.0f, 0.2f);
+
+    unsigned int starVAO, starVBO;
+    glGenVertexArrays(1, &starVAO);
+    glGenBuffers(1, &starVBO);
+
+    glBindVertexArray(starVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, starVBO);
+    glBufferData(GL_ARRAY_BUFFER, starVertices.size() * sizeof(float), starVertices.data(), GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+
     // Lamba pozisyonları
-    glm::vec3 lights[6] = {
+    glm::vec3 lights[7] = {
         glm::vec3(2.0f, 3.0f, -10.0f),
         glm::vec3(2.0f, 3.0f, 10.0f),
         glm::vec3(2.0f, 3.0f, 0.0f),
         glm::vec3(-2.0f, 3.0f , -10.0f),
         glm::vec3(-2.0f, 3.0f , 10.0f),
-        glm::vec3(-2.0f, 3.0f , 0.0f)
+        glm::vec3(-2.0f, 3.0f , 0.0f),
+        glm::vec3( -5.0f , 10.0f , -5.0f)
+
     };
 
     while (!glfwWindowShouldClose(window)) {
@@ -349,6 +436,8 @@ int main() {
 
         glClearColor(0.1f, 0.1f, 0.15f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glUseProgram(shaderProgram);
 
         glm::mat4 model = glm::mat4(1.0f);
@@ -360,7 +449,7 @@ int main() {
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
         glUniform3fv(glGetUniformLocation(shaderProgram, "viewPos"), 1, glm::value_ptr(cameraPos));
         glUniform3f(glGetUniformLocation(shaderProgram, "lightColor"), 1.0f, 1.0f, 0.8f);
-        glUniform3fv(glGetUniformLocation(shaderProgram, "lightPos"), 6, glm::value_ptr(lights[0]));
+        glUniform3fv(glGetUniformLocation(shaderProgram, "lightPos"), 7, glm::value_ptr(lights[0]));
 
         glBindVertexArray(VAO);
 
@@ -419,7 +508,60 @@ int main() {
         glDrawArrays(GL_TRIANGLES, 132, 6);
 
         glUniform3f(glGetUniformLocation(shaderProgram, "objectcolor"), 0.4f, 0.2f, 0.1f);
+
         glDrawArrays(GL_TRIANGLES, 138, 6);
+
+        float time = glfwGetTime();
+        float starX = fmod(time, 10.0f) - 5.0f;
+        float starY = 10.0f + cos(time * 0.25f) * 1.0f; // yukarıdan aşağıya küçük çapraz hareket
+        glm::vec3 starPos(starX, starY, -5.0f);
+		lights[6] = starPos; // Yıldızın pozisyonunu güncelle
+
+        // Kuyruğa ekle
+        starTrail.push_back(starPos);
+        if (starTrail.size() > maxTrailLength)
+            starTrail.erase(starTrail.begin()); // Eski noktaları sil
+
+       // glUseProgram(shaderProgram);
+
+        glm::mat4 starmodel = glm::mat4(1.0f);
+        starmodel = glm::translate(starmodel, glm::vec3(starX, starY, -5.0f)); // Yıldız yukarıda ve X ekseninde hareket ediyor
+
+        int modelLoc = glGetUniformLocation(shaderProgram, "model");
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(starmodel));
+
+        // Emission'ı etkinleştir ve rengini ayarla
+        glUniform1i(glGetUniformLocation(shaderProgram, "useEmission"), 1);
+
+
+        glm::vec3 starEmissionColor = glm::vec3(1.0f, 1.0f, 1.0f); // Beyaz emission
+        glUniform3fv(glGetUniformLocation(shaderProgram, "emissionColor"), 1, glm::value_ptr(starEmissionColor));
+       
+        // Renk ayarı isteğe bağlı
+        glUniform3f(glGetUniformLocation(shaderProgram, "objectColor"), 1.0f, 1.0f, 1.0f); // Sarı yıldız
+
+        glBindVertexArray(starVAO);
+        glDrawArrays(GL_TRIANGLES, 0, starVertices.size() / 3);
+
+        glUniform1i(glGetUniformLocation(shaderProgram, "useEmission"), 0); // Emission kapalı
+
+        for (size_t i = 0; i < starTrail.size(); ++i) {
+            float alpha = static_cast<float>(i) / starTrail.size(); // 0.0 → 1.0
+            glm::mat4 trailmodel = glm::mat4(1.0f);
+            trailmodel = glm::translate(trailmodel, starTrail[i]);
+            trailmodel = glm::scale(trailmodel, glm::vec3(0.5f)); // Kuyruk noktaları küçük
+
+            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(trailmodel));
+
+            // Alpha'yı gönder
+            int colorLoc = glGetUniformLocation(shaderProgram, "objectColor");
+            glUniform4f(colorLoc, 1.0f, 1.0f, 1.0f, 1.0f - alpha); // Sarımsı renk, alpha düşük
+
+            glBindVertexArray(starVAO);
+            glDrawArrays(GL_POINTS, 0, starVertices.size()); // Ya da GL_POINTS
+        }
+
+
 
         glfwSwapBuffers(window);
         glfwPollEvents();
