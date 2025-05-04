@@ -1,7 +1,7 @@
 ### Sokak Sahnesi - OpenGL Projesi
 Bu proje, OpenGL kullanarak bir sokak sahnesi oluşturmayı amaçlamaktadır. Sahne, sokak lambaları, kaldırımlar, yol ve binalar gibi çeşitli öğeleri içermektedir. Kamera hareketleri, kullanıcı etkileşimi ile sağlanır ve sahne, birinci şahıs bakış açısıyla görüntülenebilir.
 
-##Hikaye
+## Hikaye
 Küçük, kırmızı çatılı evin penceresinden sıcak bir ışık sızıyordu. Bahçedeki ağaçların dalları hafifçe sallanıyordu. Gökyüzü, lacivert bir örtü gibiydi ve üzerinde tek tük parlayan yıldızlar vardı. Tam o sırada, evin tam üstünden parlak bir ışık çizgisi kaydı. Kayan bir yıldız, kısa bir an için her şeyi aydınlattı. Penceredeki ışıkta bir anlık bir parıltı oldu, sonra yıldız karanlığa karıştı. Ev sessizce orada kaldı, gökyüzü de öyle. O kısacık an, geceye sihirli bir dokunuş katmıştı sadece.
 
 ## Özellikler
